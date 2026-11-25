@@ -52,4 +52,60 @@ public class ExerciseTests
         copy.Clear();
         Assert.Equal(1, board.Count);
     }
+    [Fact]
+    public void NewMissionBoard_StartsEmpty()
+    {
+    
+        var board = new MissionBoard();
+
+        Assert.Equal(0, board.Count);
+        Assert.Empty(board.GetAll());
+    }
+
+    [Fact]
+    public void Complete_SameTaskTwice_RemainsCompleted()
+    {
+
+        var board = new MissionBoard();
+        var task = board.Add("Sjekk antenne");
+
+        bool first = board.Complete(task.Id);
+        bool second = board.Complete(task.Id);
+
+        Assert.True(first);
+        Assert.True(second);
+        Assert.True(task.IsCompleted);
+        Assert.Equal(1, board.Count);
+    }
+
+    [Fact]
+    public void TwoMissionBoards_HaveIndependentState()
+    {   
+
+        var board1 = new MissionBoard();
+        var board2 = new MissionBoard();
+
+        board1.Add("Sjekk antenne");
+
+        Assert.Equal(1, board1.Count);
+        Assert.Equal(0, board2.Count);
+
+        // Add first mission to second board
+        var task2 = board2.Add("Lad rover");
+
+        Assert.Equal(1, task2.Id);
+    }
+
+
+    [Fact]
+    public void GetAll_ContainsSameTaskObjects()
+    {
+        var board = new MissionBoard();
+        var task = board.Add("Sjekk antenne");
+
+        var tasks = board.GetAll();
+
+        Assert.Same(task, tasks[0]);
+    }
+
 }

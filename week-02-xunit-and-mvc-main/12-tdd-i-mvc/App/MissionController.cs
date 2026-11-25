@@ -31,7 +31,9 @@ public class MissionController
                 case "3":
                     CompleteTask();
                     break;
-                // TODO: Koble menyvalg 4 til GetPending og ShowTasks.
+                case "4":
+                    _view.ShowTasks(_board.GetPending());
+                    break;
                 case "0":
                     running = false;
                     break;

@@ -32,9 +32,20 @@ public class MissionBoard
         return false;
     }
 
+    
     public List<MissionTask> GetPending()
     {
-        // TODO: Skriv og kjør tester før du implementerer filteret.
-        return new List<MissionTask>();
+        var pending = new List<MissionTask>();
+
+        foreach (var task in _tasks)
+        {
+            if (!task.IsCompleted)
+            {
+                pending.Add(task);
+            }
+        }
+
+        return pending;
     }
+
 }

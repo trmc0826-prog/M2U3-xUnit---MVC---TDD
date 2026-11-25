@@ -15,5 +15,6 @@ public class MissionTask
     public void Complete()
     {
         // TODO: Implementer først etter en rød test.
+        IsCompleted = true;
     }
 }

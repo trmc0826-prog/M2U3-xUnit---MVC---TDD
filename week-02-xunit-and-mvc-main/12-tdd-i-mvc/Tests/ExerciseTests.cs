@@ -66,4 +66,79 @@ public class ExerciseTests
         Assert.Equal(2, board.Count);
     }
     // TODO: Tom, alle ufullførte, alle fullførte, rekkefølge og samlingskopi.
+    [Fact]
+    public void GetPending_EmptyBoard_ReturnsEmptyList()
+    {
+        var board = new MissionBoard();
+        var actual = board.GetPending();
+
+
+        Assert.Empty(actual);
+    }
+
+    [Fact]
+    public void GetPending_AllIncomplete_ReturnsBothTasks()
+    {
+        var board = new MissionBoard();
+
+        board.Add("Sjekk Antenne");
+        board.Add("Lad rover");
+
+        var actual = board.GetPending();
+
+        Assert.Equal(2 ,actual.Count);
+    }
+   
+    [Fact]
+    public void GetPending_AllCompleted_ReturnsEmpty()
+    {
+        var board = new MissionBoard();
+        var first = board.Add("Sjekk antenne");
+        var second = board.Add("Lad rover");
+
+        board.Complete(first.Id);
+        board.Complete(second.Id);
+
+        var actual = board.GetPending();
+
+        Assert.Empty(actual);
+        Assert.Equal(2, board.Count);
+    }
+
+    [Fact]
+    public void GetPending_PreserveOriginalOrder()
+    {
+        var board = new MissionBoard();
+
+        var firstTask = board.Add("Sjekk antenne");
+        var secondTask = board.Add("Lad rover");
+        var thirdTask = board.Add("Kontroller drivstoff");
+
+        board.Complete(secondTask.Id);
+        var pending = board.GetPending();
+
+        Assert.Equal(2, pending.Count);
+        Assert.Same(firstTask, pending[0]);
+        Assert.Same(thirdTask, pending[1]);
+        Assert.Equal(3, board.Count);
+    }
+
+    [Fact]
+    public void GetPending_ClearingResult_DoesNotChangeBoard()
+    {
+    
+        var board = new MissionBoard();
+        board.Add("Sjekk antenne");
+        board.Add("Lad rover");
+
+
+        var pending = board.GetPending();
+        Assert.Equal(2, pending.Count);
+
+        pending.Clear();
+
+        Assert.Equal(2, board.Count);
+        Assert.Equal(2, board.GetPending().Count);
+    }
+
 }
